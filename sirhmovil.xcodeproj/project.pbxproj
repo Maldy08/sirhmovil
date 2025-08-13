@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		545C04902E49A7E6000DAC3F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 545C048F2E49A7E6000DAC3F /* FirebaseCore */; };
+		545C04922E49A7E6000DAC3F /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 545C04912E49A7E6000DAC3F /* FirebaseMessaging */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		545C04602E499894000DAC3F /* sirhmovil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sirhmovil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		545C04942E4A3E43000DAC3F /* Exceptions for "sirhmovil" folder in "sirhmovil" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 545C045F2E499894000DAC3F /* sirhmovil */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		545C04622E499894000DAC3F /* sirhmovil */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				545C04942E4A3E43000DAC3F /* Exceptions for "sirhmovil" folder in "sirhmovil" target */,
+			);
 			path = sirhmovil;
 			sourceTree = "<group>";
 		};
@@ -23,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				545C04922E49A7E6000DAC3F /* FirebaseMessaging in Frameworks */,
+				545C04902E49A7E6000DAC3F /* FirebaseCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,8 @@
 			);
 			name = sirhmovil;
 			packageProductDependencies = (
+				545C048F2E49A7E6000DAC3F /* FirebaseCore */,
+				545C04912E49A7E6000DAC3F /* FirebaseMessaging */,
 			);
 			productName = sirhmovil;
 			productReference = 545C04602E499894000DAC3F /* sirhmovil.app */;
@@ -94,6 +116,9 @@
 			);
 			mainGroup = 545C04572E499894000DAC3F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				545C048E2E49A7E6000DAC3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 545C04612E499894000DAC3F /* Products */;
 			projectDirPath = "";
@@ -251,11 +276,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = sirhmovil/sirhmovil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GHHB3AQ553;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = sirhmovil/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SIRH INJUVEBC";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -279,11 +308,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = sirhmovil/sirhmovil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GHHB3AQ553;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = sirhmovil/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SIRH INJUVEBC";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +357,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		545C048E2E49A7E6000DAC3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		545C048F2E49A7E6000DAC3F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 545C048E2E49A7E6000DAC3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		545C04912E49A7E6000DAC3F /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 545C048E2E49A7E6000DAC3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 545C04582E499894000DAC3F /* Project object */;
 }

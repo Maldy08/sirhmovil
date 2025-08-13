@@ -1,17 +1,20 @@
-//
-//  sirhmovilApp.swift
-//  sirhmovil
-//
-//  Created by Carlos Maldonado on 10/08/25.
-//
-
+// InjuveSIRHApp.swift
 import SwiftUI
+import FirebaseCore
 
 @main
-struct sirhmovilApp: App {
+struct InjuveSIRHApp: App {
+    @StateObject private var authManager = AuthManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authManager)
         }
     }
 }
