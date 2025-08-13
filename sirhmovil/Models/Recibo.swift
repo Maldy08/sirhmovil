@@ -68,12 +68,7 @@ struct Recibo: Codable, Identifiable {
 extension Recibo {
     // Formateador de periodo como en tu Flutter actualizado
     var formatoPeriodo: String {
-        let periodoStr = String(periodo).padding(toLength: 6, withPad: "0", startingAt: 0)
-        guard periodoStr.count >= 6 else { return "Periodo: \(periodo)" }
-        
-        let anio = String(periodoStr.prefix(4))
-        let quincena = String(periodoStr.suffix(2))
-        return "Periodo \(quincena)"
+        return "Periodo \(periodo)"
     }
     
     // Función para generar datos dummy como en tu Flutter (útil para testing)

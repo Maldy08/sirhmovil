@@ -132,11 +132,6 @@ struct EnhancedRecibosView: View {
                         enhancedSearchBar
                     }
                     
-                    // Banner de estadísticas (opcional)
-                    if showingStatistics && !viewModel.recibos.isEmpty {
-                        statisticsBanner
-                    }
-                    
                     // Contenido principal
                     ZStack {
                         Color(.systemGroupedBackground)
@@ -150,20 +145,27 @@ struct EnhancedRecibosView: View {
             .navigationBarTitleDisplayMode(.automatic)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { showingMenu = true }) {
-                        Image(systemName: "line.horizontal.3")
+                    Button(action: { showingProfile = true }) {
+                        Image(systemName: "person.circle")
+                            .font(.title2)
+                            .foregroundColor(Color.theme.primary)
                     }
+                    
+                    
                 }
                 
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     // Botón de estadísticas
                     Button(action: { showingStatistics.toggle() }) {
                         Image(systemName: showingStatistics ? "chart.bar.fill" : "chart.bar")
+                            .foregroundColor(Color.theme.primary)
+                            
                     }
                     
                     // Botón de búsqueda
                     Button(action: toggleSearch) {
                         Image(systemName: viewModel.isSearching ? "xmark" : "magnifyingglass")
+                            .foregroundColor(Color.theme.primary)
                     }
                     
                     // Menú de opciones
@@ -197,13 +199,10 @@ struct EnhancedRecibosView: View {
                         
                     } label: {
                         Image(systemName: "ellipsis.circle")
+                            .foregroundColor(Color.theme.primary)
                     }
                 }
             }
-        }
-        .sheet(isPresented: $showingMenu) {
-            MenuView(showingProfile: $showingProfile)
-                .environmentObject(authManager)
         }
         .sheet(isPresented: $showingProfile) {
             ProfileView()
@@ -332,6 +331,12 @@ struct EnhancedRecibosView: View {
     private var recibosListView: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
+                // Banner de estadísticas dentro del scroll
+                if showingStatistics && !viewModel.recibos.isEmpty {
+                    statisticsBanner
+                        .padding(.bottom, 8)
+                }
+                
                 ForEach(viewModel.filteredAndSortedRecibos) { recibo in
                     EnhancedReciboListItem(recibo: recibo) {
                         selectedRecibo = recibo
@@ -567,13 +572,7 @@ struct EnhancedReciboListItem: View {
                 .cornerRadius(8)
         }
         .padding()
-        .background(
-            LinearGradient(
-                colors: [Color.blue, Color.blue.opacity(0.8)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .background(Color.theme.primary)
     }
     
     private var contentView: some View {
@@ -649,38 +648,8 @@ struct EnhancedReciboListItem: View {
     }
 }
 
-// MARK: - Views temporales (debes crear archivos separados para estos)
-struct MenuView: View {
-    @Binding var showingProfile: Bool
-    @EnvironmentObject var authManager: AuthManager
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        NavigationView {
-            List {
-                Button("Mi Perfil") {
-                    dismiss()
-                    showingProfile = true
-                }
-                
-                Button("Cerrar Sesión") {
-                    dismiss()
-                    authManager.logout()
-                }
-                .foregroundColor(.red)
-            }
-            .navigationTitle("Menú")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cerrar") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
-}
+// MARK: - Views temporales (debes crear archivos separados para estos
+
 
 
 struct ExportSheet: View {
@@ -730,5 +699,12 @@ struct ExportSheet: View {
 }
 
 
-
-// MARK: - Extensiones necesarias
+// MARK: - Previews
+struct EnhancedRecibosView_Previews: PreviewProvider {
+    static var previews: some View {
+        EnhancedRecibosView()
+            .environmentObject(AuthManager())
+            .environmentObject(NotificationManager.shared)
+            .environmentObject(ConnectivityManager.shared)
+    }
+}
