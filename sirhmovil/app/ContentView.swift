@@ -17,6 +17,9 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.5), value: showSplash)
         .onAppear {
+            // NUEVO: Conectar NotificationManager con AuthManager
+            NotificationManager.shared.authManager = authManager
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 showSplash = false
                 

@@ -11,6 +11,9 @@ class NotificationManager: NSObject, ObservableObject {
     
     static let shared = NotificationManager()
     
+    // NUEVO: Referencia al AuthManager compartido
+    weak var authManager: AuthManager?
+    
     // MARK: - Combine para manejo de suscripciones
     private var cancellables = Set<AnyCancellable>()
     
@@ -130,11 +133,46 @@ class NotificationManager: NSObject, ObservableObject {
         
         print("➡️ Navegar a PDF: empleado=\(empleadoInt), periodo=\(periodoInt), tipo=\(tipoInt)")
         
-        // Crear notificación para que RecibosView pueda reaccionar
-        NotificationCenter.default.post(
-            name: NSNotification.Name("NavigateToPDF"),
-            object: ["empleado": empleadoInt, "periodo": periodoInt, "tipo": tipoInt]
-        )
+        // NUEVO: Verificar si el usuario está autenticado usando el AuthManager compartido
+        DispatchQueue.main.async {
+            guard let authManager = self.authManager else {
+                print("❌ AuthManager no está disponible - navegación directa")
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("NavigateToPDF"),
+                    object: ["empleado": empleadoInt, "periodo": periodoInt, "tipo": tipoInt]
+                )
+                return
+            }
+            
+            print("🚨 DEBUG: isAuthenticated = \(authManager.isAuthenticated)")
+            print("🚨 DEBUG: hasStoredSession = \(authManager.hasStoredSession())")
+            
+            if authManager.isAuthenticated {
+                // Usuario ya autenticado - navegar directamente
+                print("✅ Usuario autenticado - navegación directa")
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("NavigateToPDF"),
+                    object: ["empleado": empleadoInt, "periodo": periodoInt, "tipo": tipoInt]
+                )
+            } else if authManager.hasStoredSession() {
+                // Usuario tiene sesión pero no está autenticado - almacenar navegación pendiente
+                print("⏳ Usuario no autenticado - almacenando navegación pendiente")
+                authManager.setPendingNavigation(
+                    empleado: empleadoInt,
+                    periodo: periodoInt,
+                    tipo: tipoInt
+                )
+                
+                // La navegación se ejecutará automáticamente después de la autenticación biométrica
+            } else {
+                // No hay sesión guardada - navegar solo después del login manual
+                print("❌ No hay sesión guardada - navegación después del login")
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("NavigateToPDF"),
+                    object: ["empleado": empleadoInt, "periodo": periodoInt, "tipo": tipoInt]
+                )
+            }
+        }
     }
     
     // MARK: - Forzar actualización de token

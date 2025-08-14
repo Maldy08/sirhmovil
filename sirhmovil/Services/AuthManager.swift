@@ -147,6 +147,22 @@ class AuthManager: ObservableObject {
         if token != nil && currentUser != nil {
             isAuthenticated = true
             print("🔓 Sesión desbloqueada")
+            
+            // NUEVO: Ejecutar navegación pendiente después de autenticar
+            if let navigationData = pendingNotificationNavigation {
+                print("🔔 Ejecutando navegación pendiente desde notificación")
+                
+                // Ejecutar navegación con un pequeño delay para que la UI se cargue
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name("NavigateToPDF"),
+                        object: navigationData
+                    )
+                    
+                    // Limpiar navegación pendiente
+                    self.pendingNotificationNavigation = nil
+                }
+            }
         }
     }
     
@@ -154,6 +170,27 @@ class AuthManager: ObservableObject {
     func hasStoredSession() -> Bool {
         return token != nil && currentUser != nil
     }
+    
+    // NUEVO: Método para almacenar navegación pendiente
+    func setPendingNavigation(empleado: Int, periodo: Int, tipo: Int) {
+        pendingNotificationNavigation = [
+            "empleado": empleado,
+            "periodo": periodo,
+            "tipo": tipo
+        ]
+        print("📝 Navegación pendiente almacenada: empleado=\(empleado), periodo=\(periodo), tipo=\(tipo)")
+        
+        // NUEVO: Ejecutar autenticación biométrica inmediatamente si es posible
+        if hasStoredSession() && canUseBiometrics() && !isAuthenticated {
+            print("🔐 Ejecutando autenticación biométrica por navegación pendiente...")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.authenticateWithBiometrics()
+            }
+        }
+    }
+    
+    // NUEVO: Variable para navegación pendiente
+    private var pendingNotificationNavigation: [String: Int]?
     
     // MARK: - Logout
     func logout() {
